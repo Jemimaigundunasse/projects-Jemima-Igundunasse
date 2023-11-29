@@ -1,0 +1,40 @@
+import pandas as pd
+import matplotlib.pyplot as m
+
+m.figure(figsize=(20,7))
+tt_motors = pd.read_csv("TATAMOTORS.csv")
+tt_steel = pd.read_csv("TATASTEEL.csv")
+tcs = pd.read_csv("TCS.csv")
+
+tt_motors.info()
+tt_motors.isna().sum()
+tt_motors.describe().round(2)
+
+tt_steel.info()
+tt_steel.isna().sum()
+tt_steel.describe().round(2)
+
+tcs.info()
+tcs.isna().sum()
+tcs.describe().round(2)
+
+
+tt_motors["Date"] = pd.to_datetime(tt_motors["Date"])
+tt_motors = tt_motors.drop(["Trades", "Deliverable Volume", "%Deliverble"], axis=1)
+tt_motors["Month"] = tt_motors["Date"].dt.month
+tt_motors["Year"] = tt_motors["Date"].dt.year
+tt_motors["Day"] = tt_motors["Date"].dt.day
+tt_steel["Date"] = pd.to_datetime(tt_steel["Date"])
+tt_steel = tt_steel.drop(["Trades", "Deliverable Volume", "%Deliverble"], axis=1)
+tt_steel["Month"] = tt_steel["Date"].dt.month
+tt_steel["Year"] = tt_steel["Date"].dt.year
+tt_steel["Day"] = tt_steel["Date"].dt.day
+tcs["Date"] = pd.to_datetime(tcs["Date"])
+tcs= tcs.drop(["Trades", "Deliverable Volume", "%Deliverble"], axis=1)
+tcs["Month"] = tcs["Date"].dt.month
+tcs["Year"] = tcs["Date"].dt.year
+tcs["Day"] = tcs["Date"].dt.day
+m.plot(tt_motors["Date"], tt_motors["Open"], color="blue", label="tt_motors")
+m.plot(tt_steel["Date"], tt_steel["Open"], color="red", label="tt_steel")
+m.plot(tcs["Date"], tcs["Open"], color="red", label="tcs")
+m.show()
